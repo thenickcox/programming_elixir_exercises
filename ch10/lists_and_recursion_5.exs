@@ -1,4 +1,5 @@
 defmodule MyList do
+  # This was cheating because it used the Enum module
   # def all?(list, thing) do
   #   num_things = list
   #   |> Enum.filter(&(&1 == thing))
@@ -44,5 +45,35 @@ defmodule MyList do
 
   defp _filter(_, _, result) do
     result
+  end
+
+  # Splits the enumerable into two enumerables, leaving `count` elements in the first one
+  def split(list, count) do
+    _split(list, count, [])
+  end
+  defp _split(list, count, left) when count > 0 do
+    [head | tail] = list
+    _split(tail, count - 1, left ++ [head])
+  end
+  defp _split(list, count, left) when count == 0 do
+    {left, list -- [left]}
+  end
+
+  @doc """
+  Takes the first `count` items from the enumerable
+  """
+  def take(list, count) do
+    _take(list, count, [])
+  end
+
+  defp _take(list, count, _) when count > length(list) do
+    list
+  end
+  defp _take(_, count, result) when count == 0 do
+    result
+  end
+  defp _take(list, count, result) do
+    [head | tail] = list
+    _take(tail, count - 1, result ++ [head])
   end
 end
